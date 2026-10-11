@@ -18,6 +18,8 @@ body {
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 button, input { font: inherit; }
@@ -65,11 +67,31 @@ button.danger { color: var(--danger); }
 .alert.is-error { border-color: #fecaca; background: #fef2f2; color: #991b1b; }
 
 .app-layout {
+    flex: 1;
     display: grid;
     grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
     gap: 1rem;
     padding: 1rem clamp(1rem, 3vw, 2.5rem) 2rem;
 }
+
+.app-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem 1.25rem;
+    padding: 1rem clamp(1rem, 3vw, 2.5rem);
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.app-footer a { color: var(--accent-dark); text-underline-offset: 0.2em; }
+.app-footer a:hover { color: var(--accent); }
+.app-footer a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
 .sidebar, .workspace { display: grid; align-content: start; gap: 1rem; min-width: 0; }
 .panel { border: 1px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: 0 8px 24px #0f172a0b; }

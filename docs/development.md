@@ -57,8 +57,12 @@ The workflow in [`.github/workflows/docker-publish.yml`](../.github/workflows/do
 standard GitHub-hosted Ubuntu runners. No laptop, self-hosted runner, or Docker Hub automated-build subscription is
 required. The root Dockerfile builds the executable JAR with Java 21 and Maven, runs Java tests, and packages the runtime.
 The workflow also runs Java and browser geometry tests before building, then starts an AMD64 container and checks the
-model-library API and home page before publishing. ARM64 builds use QEMU and run the Dockerfile's Maven tests; the
-application startup smoke test runs on AMD64 only.
+model-library API, home page, and bundled license/attribution URLs before publishing. ARM64 builds use QEMU and run the
+Dockerfile's Maven tests; the application startup smoke test runs on AMD64 only.
+
+The root `LICENSE` and `NOTICE` files are bundled by Maven under `META-INF/resources/urdf-viewer/legal` in the JAR and
+served through the viewer footer links. Docker copies both files into the build stage so the image carries the same
+license and attribution. Update the root files rather than maintaining separate copies inside `src/`.
 
 ### One-time configuration
 

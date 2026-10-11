@@ -14,10 +14,29 @@ and strict validation for untrusted model bundles. It does not load robot config
 - Validate paths, XML, referenced assets, archive expansion, STL sizes, and triangle counts before publishing a model.
 - Run directly with Java/Maven or as a non-root Docker container.
 
+## Quick Start with Docker
+
+Run the public `renarj/urdf-viewer:edge` image with Docker installed and running. No local Java, Maven, or source checkout
+is required:
+
+```bash
+docker run --rm --pull always \
+  --name urdf-viewer \
+  -p 127.0.0.1:8081:8081 \
+  -v urdf-viewer-data:/data/urdf-viewer \
+  renarj/urdf-viewer:edge
+```
+
+Open [http://localhost:8081](http://localhost:8081) in a WebGL-capable browser and import your model ZIP or directory.
+The browser needs internet access for the viewer's pinned dependencies. Press `Ctrl+C` to stop the container; imported
+models remain in the `urdf-viewer-data` volume and are available the next time you run the command.
+
+The `edge` tag tracks the latest development build from `main`; `--pull always` fetches the current image on each start.
+
 ## Requirements
 
-- Java 21
-- Maven 3.9 or newer
+- Java 21 (when running outside Docker)
+- Maven 3.9 or newer (when building or running from source)
 - A WebGL-capable browser with internet access for the pinned Three.js and `urdf-loader` CDN modules
 
 ## Run
@@ -119,4 +138,15 @@ proxy before making it publicly reachable.
 
 ## License
 
-Licensed under the [Apache License 2.0](LICENSE).
+Copyright 2026 Renze de Vries. This project is source-available under the
+[PolyForm Noncommercial License 1.0.0](LICENSE). It permits noncommercial reuse, modification, and redistribution,
+including the additional organizational uses specified in the license. Commercial uses outside those permissions require
+a separate written agreement with Renze de Vries; contact the maintainer through the
+[GitHub repository](https://github.com/renarj/urdf-viewer).
+
+Redistributions must include the license terms (or their URL) and preserve the `Required Notice:` lines in [NOTICE](NOTICE).
+The attribution does not have to appear in the viewer itself. The viewer footer displays the publishing year and author,
+and links to the bundled license and attribution notice.
+
+Previously published versions and code released under Apache 2.0 retain those permissions. This license change does not
+revoke earlier Apache grants. Third-party dependencies retain their respective licenses.
