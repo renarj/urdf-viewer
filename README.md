@@ -58,6 +58,11 @@ docker run --rm \
 Open `http://localhost:8081`. To bind-mount a host directory instead, ensure UID/GID `10001` can write it or supply a
 compatible `--user` value.
 
+GitHub Actions builds and publishes `renarj/urdf-viewer` on GitHub-hosted runners. Pushes to `main` publish `edge` and
+`sha-<full-commit>` tags; release tags such as `v1.0.0` publish `1.0.0`, `1.0`, and `latest`. Published images support
+Linux AMD64 and ARM64. Pull requests run tests and verify the container without publishing.
+See [Docker Hub publishing setup](docs/development.md#docker-hub-publishing) for credentials and release instructions.
+
 ## Import Contract
 
 ZIP is the preferred format. Each archive must contain a primary expanded `.urdf` file and every STL referenced by
