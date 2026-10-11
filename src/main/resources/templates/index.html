@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>URDF Viewer</title>
+    <link rel="stylesheet" href="/urdf-viewer/css/viewer.css">
+</head>
+<body>
+<header class="app-header">
+    <div>
+        <p class="eyebrow">Robot model tools</p>
+        <h1>URDF Viewer</h1>
+        <p>Inspect URDF and STL model bundles without a robot runtime.</p>
+    </div>
+    <div class="limits" aria-label="Import limits">
+        <span th:text="|Up to ${maxUploadMegabytes} MiB|">Up to 128 MiB</span>
+        <span th:text="|${maxMeshes} meshes|">300 meshes</span>
+        <span th:text="|${#numbers.formatInteger(maxTriangles, 1, 'COMMA')} triangles|">5,000,000 triangles</span>
+    </div>
+</header>
+
+<div id="alert" class="alert" role="status" aria-live="polite" hidden></div>
+
+<main class="app-layout">
+    <aside class="sidebar">
+        <section class="panel import-panel">
+            <h2>Import model</h2>
+            <p class="help-copy">ZIP is recommended because it preserves paths between the URDF and its meshes.</p>
+            <label class="field">
+                <span>Display name <small>(optional for one model)</small></span>
+                <input id="displayName" type="text" maxlength="120" placeholder="Workshop quadruped">
+            </label>
+
+            <form id="zipImportForm" class="import-form">
+                <label class="file-picker">
+                    <span>ZIP bundle(s)</span>
+                    <input id="zipBundles" name="bundles" type="file" accept=".zip,application/zip" multiple>
+                </label>
+                <button class="primary" type="submit">Import ZIP</button>
+            </form>
+
+            <div class="divider"><span>or</span></div>
+
+            <form id="folderImportForm" class="import-form">
+                <label class="file-picker">
+                    <span>Model folder</span>
+                    <input id="modelFolder" name="files" type="file" webkitdirectory directory multiple>
+                </label>
+                <button type="submit">Import folder</button>
+            </form>
+        </section>
+
+        <section class="panel library-panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="eyebrow">Persistent storage</p>
+                    <h2>Model library</h2>
+                </div>
+                <span id="modelCount" class="model-count" th:text="${#lists.size(models)}">0</span>
+            </div>
+            <div id="modelLibrary" class="model-library">
+                <p id="emptyLibrary" class="empty-copy" th:hidden="${!#lists.isEmpty(models)}">
+                    No models imported yet.
+                </p>
+                <button th:each="model : ${models}" type="button" class="model-list-item"
+                        th:attr="data-model-id=${model.id}">
+                    <strong th:text="${model.displayName}">Model</strong>
+                    <span th:text="|${model.meshCount} meshes|">0 meshes</span>
+                    <small th:text="${#temporals.format(model.importedAt, 'yyyy-MM-dd HH:mm')}">date</small>
+                </button>
+            </div>
+        </section>
+    </aside>
+
+    <section class="workspace">
+        <div class="panel viewer-panel">
+            <div class="viewer-header">
+                <div>
+                    <p class="eyebrow">Selected model</p>
+                    <h2 id="modelTitle">No model selected</h2>
+                    <p id="modelMetadata" class="model-metadata">Import a URDF model bundle to begin.</p>
+                </div>
+                <div class="viewer-actions" aria-label="Viewer controls">
+                    <button id="rotateLeft" type="button" title="Rotate left">↶</button>
+                    <button id="rotateRight" type="button" title="Rotate right">↷</button>
+                    <button id="resetView" type="button">Reset view</button>
+                    <button id="resetPose" type="button">Reset pose</button>
+                    <button id="deleteModel" class="danger" type="button" disabled>Delete</button>
+                </div>
+            </div>
+
+            <div class="viewer-shell">
+                <div id="viewerScene" class="viewer-scene" aria-label="Interactive 3D URDF model"></div>
+                <div id="viewerLoading" class="viewer-loading" role="status" aria-live="polite">
+                    <svg viewBox="0 0 180 96" aria-hidden="true">
+                        <g class="loading-links">
+                            <path d="M40 48 L82 24 L138 43 L104 76 L40 48"></path>
+                            <path d="M82 24 L104 76"></path>
+                        </g>
+                        <g class="loading-nodes">
+                            <circle cx="40" cy="48" r="7"></circle>
+                            <circle cx="82" cy="24" r="7"></circle>
+                            <circle cx="138" cy="43" r="7"></circle>
+                            <circle cx="104" cy="76" r="7"></circle>
+                        </g>
+                        <circle class="loading-pulse" cx="82" cy="24" r="11"></circle>
+                    </svg>
+                    <strong id="viewerLoadingText">Choose a model from the library</strong>
+                </div>
+            </div>
+            <div id="viewerMetrics" class="viewer-metrics">No model loaded</div>
+        </div>
+
+        <section class="panel joints-panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="eyebrow">URDF articulation</p>
+                    <h2>Joint controls</h2>
+                </div>
+            </div>
+            <div id="jointControls" class="joint-controls">
+                <p class="empty-copy">Joint controls appear after a model loads.</p>
+            </div>
+        </section>
+    </section>
+</main>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/",
+    "three/examples/jsm/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/",
+    "urdf-loader": "https://cdn.jsdelivr.net/npm/urdf-loader@0.13.1/src/URDFLoader.js"
+  }
+}
+</script>
+<script type="module" src="/urdf-viewer/js/viewer-page.js?v=20261009-large-model-v11"></script>
+</body>
+</html>

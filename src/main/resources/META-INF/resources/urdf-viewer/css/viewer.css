@@ -1,0 +1,133 @@
+:root {
+    color-scheme: light;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #0f172a;
+    background: #eef2f6;
+    --accent: #0f766e;
+    --accent-dark: #115e59;
+    --border: #d7dee8;
+    --muted: #64748b;
+    --surface: #ffffff;
+    --danger: #b42318;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+button, input { font: inherit; }
+
+button {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 0.58rem 0.8rem;
+    background: #fff;
+    color: #0f172a;
+    cursor: pointer;
+}
+
+button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent-dark); }
+button:disabled { cursor: not-allowed; opacity: 0.5; }
+button.primary { color: white; background: var(--accent); border-color: var(--accent); }
+button.danger { color: var(--danger); }
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    align-items: end;
+    padding: 1.3rem clamp(1rem, 3vw, 2.5rem);
+    color: white;
+    background: linear-gradient(120deg, #0f172a, #134e4a);
+}
+
+.app-header h1 { margin: 0.1rem 0; font-size: clamp(1.6rem, 3vw, 2.3rem); }
+.app-header p { margin: 0.2rem 0 0; color: #ccfbf1; }
+.eyebrow { margin: 0; color: var(--accent); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.11em; text-transform: uppercase; }
+.app-header .eyebrow { color: #99f6e4; }
+
+.limits { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-end; }
+.limits span { padding: 0.4rem 0.65rem; border: 1px solid #ffffff3b; border-radius: 999px; color: #e6fffb; font-size: 0.78rem; }
+
+.alert {
+    margin: 1rem clamp(1rem, 3vw, 2.5rem) 0;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid #99f6e4;
+    border-radius: 9px;
+    background: #f0fdfa;
+    color: #115e59;
+}
+.alert.is-error { border-color: #fecaca; background: #fef2f2; color: #991b1b; }
+
+.app-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1rem clamp(1rem, 3vw, 2.5rem) 2rem;
+}
+
+.sidebar, .workspace { display: grid; align-content: start; gap: 1rem; min-width: 0; }
+.panel { border: 1px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: 0 8px 24px #0f172a0b; }
+.panel h2 { margin: 0.12rem 0; font-size: 1.1rem; }
+.import-panel, .library-panel, .joints-panel { padding: 1rem; }
+.help-copy, .model-metadata, .empty-copy { color: var(--muted); font-size: 0.86rem; line-height: 1.45; }
+
+.field, .file-picker { display: grid; gap: 0.4rem; margin-top: 0.85rem; font-size: 0.84rem; font-weight: 700; }
+.field small { color: var(--muted); font-weight: 500; }
+.field input, .file-picker input { min-width: 0; padding: 0.62rem; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; }
+.import-form { display: grid; gap: 0.65rem; }
+.divider { display: flex; align-items: center; gap: 0.5rem; margin: 0.9rem 0 0.2rem; color: #94a3b8; font-size: 0.75rem; }
+.divider::before, .divider::after { content: ""; height: 1px; flex: 1; background: #e2e8f0; }
+
+.panel-heading, .viewer-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.model-count { display: grid; place-items: center; min-width: 2rem; height: 2rem; border-radius: 999px; color: var(--accent-dark); background: #ccfbf1; font-weight: 800; }
+.model-library { display: grid; gap: 0.45rem; margin-top: 0.75rem; max-height: 42vh; overflow: auto; }
+.model-list-item { display: grid; gap: 0.18rem; width: 100%; text-align: left; }
+.model-list-item span, .model-list-item small { color: var(--muted); font-size: 0.75rem; }
+.model-list-item.is-selected { border-color: var(--accent); background: #f0fdfa; box-shadow: inset 3px 0 var(--accent); }
+
+.viewer-panel { overflow: hidden; }
+.viewer-header { padding: 1rem; }
+.viewer-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.4rem; }
+.model-metadata { margin: 0.25rem 0 0; }
+.viewer-shell { position: relative; height: clamp(420px, 62vh, 760px); min-height: 420px; border-block: 1px solid var(--border); background: #f8fafc; }
+.viewer-scene { width: 100%; height: 100%; }
+.viewer-scene canvas { display: block; width: 100%; height: 100%; }
+.viewer-loading { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 0.7rem; background: #f8fafcf2; color: #334155; text-align: center; }
+.viewer-loading svg { width: 180px; max-width: 55vw; }
+.loading-links { fill: none; stroke: #94a3b8; stroke-width: 2; }
+.loading-nodes { fill: var(--accent); }
+.loading-pulse { fill: none; stroke: #14b8a6; stroke-width: 3; animation: pulse 1.2s ease-out infinite; }
+.viewer-loading.is-error { color: #991b1b; }
+.viewer-loading.is-error .loading-pulse { animation: none; stroke: #dc2626; }
+.viewer-metrics { padding: 0.7rem 1rem; color: var(--muted); background: #f8fafc; font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+
+.joint-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.65rem 1rem; margin-top: 0.8rem; max-height: 340px; overflow: auto; }
+.joint-control { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.25rem 0.7rem; align-items: center; padding: 0.65rem; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; }
+.joint-control input { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); }
+.joint-name { overflow: hidden; text-overflow: ellipsis; font-size: 0.8rem; font-weight: 700; white-space: nowrap; }
+.joint-control output { color: var(--accent-dark); font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+
+@keyframes pulse {
+    from { opacity: 0.9; transform: scale(0.7); transform-origin: 82px 24px; }
+    to { opacity: 0; transform: scale(1.8); transform-origin: 82px 24px; }
+}
+
+@media (max-width: 900px) {
+    .app-header { align-items: start; flex-direction: column; }
+    .limits { justify-content: flex-start; }
+    .app-layout { grid-template-columns: 1fr; }
+    .sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px) {
+    .sidebar { grid-template-columns: 1fr; }
+    .viewer-header { align-items: stretch; flex-direction: column; }
+    .viewer-actions { justify-content: flex-start; }
+    .viewer-shell { height: 55vh; min-height: 360px; }
+}
