@@ -1,0 +1,11 @@
+{
+  "name": "urdf-viewer-browser-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test src/test/js/*.test.js"
+  },
+  "devDependencies": {
+    "three": "0.164.1"
+  }
+}

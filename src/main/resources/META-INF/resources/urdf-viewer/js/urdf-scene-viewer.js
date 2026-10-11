@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { createUrdfRobotRenderer } from "./urdf-model-loader.js?v=20261009-large-model-v11";
+import { placeModelOnFloor } from "./model-placement.js?v=20261011-floor-v12";
 
 export function createUrdfSceneViewer(options) {
     const container = options.container;
@@ -88,9 +89,10 @@ export function createUrdfSceneViewer(options) {
             }
             pendingLoader = null;
             activeModel = loaded;
+            const bounds = placeModelOnFloor(loaded.root);
             modelGroup.add(loaded.root);
             createJointControls(loaded);
-            fitCamera(loaded.bounds());
+            fitCamera(bounds);
             updateMetrics(loaded.metrics());
             hideLoading();
             onStatus(loaded.metrics());

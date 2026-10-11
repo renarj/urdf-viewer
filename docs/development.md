@@ -14,6 +14,7 @@ was extracted.
 
 ```bash
 mvn test
+npm ci && npm test
 mvn spring-boot:run
 mvn clean package
 java -jar target/urdf-viewer-1.0.0-SNAPSHOT.jar
@@ -21,6 +22,8 @@ docker build -t urdf-viewer .
 ```
 
 The application listens on port `8081` and stores imported models below `./data/urdf-viewer` by default.
+The browser geometry regression tests require Node.js 20 or newer; their Three.js dependency matches the pinned browser
+version. Node.js is only needed for these tests, not to build or run the application.
 
 ## Backend Conventions
 
@@ -47,4 +50,3 @@ The application listens on port `8081` and stores imported models below `./data/
 4. Switch models, articulate joints, reset the view, and delete a model.
 5. Confirm a restart reloads the stored manifests.
 6. For container changes, build the image and mount a writable volume at `/data/urdf-viewer`.
-

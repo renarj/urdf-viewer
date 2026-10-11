@@ -1,4 +1,4 @@
-import { createUrdfSceneViewer } from "./urdf-scene-viewer.js?v=20261009-large-model-v11";
+import { createUrdfSceneViewer } from "./urdf-scene-viewer.js?v=20261011-floor-v12";
 
 const elements = {
     library: document.querySelector("#modelLibrary"),

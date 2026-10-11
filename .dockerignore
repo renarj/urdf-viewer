@@ -3,9 +3,9 @@
 .idea
 .vscode
 target
+node_modules
 data
 logs
 *.iml
 *.log
 .DS_Store
-

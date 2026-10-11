@@ -85,6 +85,8 @@ DAE, OBJ, glTF, remote URLs, and collision rendering are not supported in the in
 
 The browser uses the generic URDF/STL loader originally extracted from Robot Studio. It waits for all meshes before
 displaying a model, fits the camera to model bounds, supports orbit/pan/zoom, and exposes sliders for movable URDF joints.
+On load, the model keeps its URDF orientation with Z-up converted to the viewer's Y-up, and is shifted vertically so its
+lowest visual point rests on the floor grid. This placement stays fixed while articulating joints.
 Three.js and `urdf-loader` use a pinned CDN import map, so page use currently requires access to those dependencies.
 
 ## Configuration
