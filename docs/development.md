@@ -64,15 +64,22 @@ application startup smoke test runs on AMD64 only.
 
 1. Create a Docker Hub personal access token for the account that can push to `renarj/urdf-viewer`. Grant Read & Write
    permission; Delete permission is unnecessary.
-2. In the GitHub repository, open **Settings → Secrets and variables → Actions**.
-3. Under **Variables**, create `DOCKERHUB_USERNAME` with the value `renarj`.
-4. Under **Secrets**, create `DOCKERHUB_TOKEN` containing the access token.
+2. In the GitHub repository, open **Settings → Environments → dev-build** (create that environment if needed).
+3. Under **Environment secrets**, create `DOCKERHUB_USERNAME` with the value `renarj`.
+4. Under **Environment secrets**, create `DOCKERHUB_TOKEN` containing the access token.
 5. Push the workflow to `main`. Follow its progress in the repository's **Actions** tab.
 
-The username is a repository variable, not a secret. Never commit the token. Pull requests do not log in or publish,
-including pull requests from forks. Publishing is restricted to push events in `renarj/urdf-viewer`; forks must update
+Both credentials are read through the `secrets` context. The separate publishing job references `environment: dev-build`,
+which makes that environment's secrets available. Java/browser tests and container verification do not use the environment;
+pull requests, including those from forks, never run the publishing job. Never commit the token.
+If `dev-build` restricts deployment branches and tags, allow the `main` branch and `v*` tags for the configured triggers.
+Any required environment approval applies only to publishing, after tests and container verification succeed.
+
+Publishing is restricted to push events in `renarj/urdf-viewer`; forks must update
 the repository guard and image name to publish to their own registry. If credentials are missing, tests and the container
 smoke test still run, but publishing fails with a configuration message. After configuring credentials, rerun that workflow.
+If you changed the workflow itself, commit and push the updated file to start a new run; rerunning an old failed run uses
+the workflow from its original commit.
 
 ### Image tags and releases
 
