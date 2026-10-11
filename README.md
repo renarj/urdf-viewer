@@ -33,7 +33,7 @@ models remain in the `urdf-viewer-data` volume and are available the next time y
 
 The `edge` tag tracks the latest development build from `main`; `--pull always` fetches the current image on each start.
 
-## Requirements
+## Requirements to build
 
 - Java 21 (when running outside Docker)
 - Maven 3.9 or newer (when building or running from source)
@@ -61,7 +61,7 @@ mvn clean package
 java -jar target/urdf-viewer-1.0.0-SNAPSHOT.jar
 ```
 
-## Docker
+## Docker Local Build
 
 Build the image and persist the model library in a named volume:
 
@@ -76,11 +76,6 @@ docker run --rm \
 
 Open `http://localhost:8081`. To bind-mount a host directory instead, ensure UID/GID `10001` can write it or supply a
 compatible `--user` value.
-
-GitHub Actions builds and publishes `renarj/urdf-viewer` on GitHub-hosted runners. Pushes to `main` publish `edge` and
-`sha-<full-commit>` tags; release tags such as `v1.0.0` publish `1.0.0`, `1.0`, and `latest`. Published images support
-Linux AMD64 and ARM64. Pull requests run tests and verify the container without publishing.
-See [Docker Hub publishing setup](docs/development.md#docker-hub-publishing) for credentials and release instructions.
 
 ## Import Contract
 
